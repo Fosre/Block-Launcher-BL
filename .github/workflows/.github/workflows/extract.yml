@@ -1,0 +1,28 @@
+name: Extract BlockPojav
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract project
+        run: |
+          unzip -o BlockPojav_Android_v0.3_UI.zip
+          cp -R BlockPojav_Android/. .
+          rm -rf BlockPojav_Android
+          rm -f BlockPojav_Android_v0.3_UI.zip
+
+      - name: Save files
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -A
+          git commit -m "Extract BlockPojav project" || true
+          git push
